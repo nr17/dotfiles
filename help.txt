@@ -1,0 +1,660 @@
+for syncing:
+mmx, export CVSROOT=pserver:jyotirmay@10.1.1.9:/data/cvsplatform
+vendor and mnode, export CVSROOT=pserver:jyotirmay@10.1.1.9:/data/cvsmnode
+
+
+mysqldump  --all-databases -pmavenir > dump.sql
+
+export CVSROOT=:pserver:jyotirmay@10.1.1.9/data/cvstools
+cvs login
+cvs co scm/CVS-Editor
+
+ctags --langmap=c:.c.x.h -R *
+
+
+/root/work/sipp/3.0/sipp 10.3.10.41:5060 -r 1 -l 1 -m 1 -sf uac_register_auth.xml -inf info_1.csv -i 10.3.10.77 -p 5070
+
+./sipp 10.3.10.153:5060 -r 1 -l 1 -m 100 -sf message_200.xml -i 10.3.10.156 -p 5070 -trace_msg
+
+egrep "Send msg|OnMessage" mNode.log  | grep -v MSG_PM_ > /tmp/a
+
+platform changes:
+%s/[0-9]*\.[0-9]*\.[0-9]*\.[0-9]*/10.3.1.16/gc
+%s/usr\/mOne\/current/home\/R_3_0\/intel/gc
+
+
+
+cvs -d :pserver:jyotirmay@10.1.1.9:/data/cvsplatform co -r $TAG mmx
+cvs -d :pserver:jyotirmay@10.1.1.9:/data/cvsmnode co -r $TAG mNode
+cvs -d :pserver:jyotirmay@10.1.1.9:/data/cvsmnode co -r $TAG vendor/expat
+cvs -d :pserver:jyotirmay@10.1.1.9:/data/cvsmnode co -r $TAG vendor/hss
+cvs -d :pserver:jyotirmay@10.1.1.9:/data/cvsmnode co -r $TAG vendor/mbedthis
+cvs -d :pserver:jyotirmay@10.1.1.9:/data/cvsmnode co -r $TAG vendor/trillium
+
+Branching:
+
+sync the head(feature/release)
+cvs tag -b <Branchname>
+cvs update -r <Branchname>
+
+Merging Process:
+
+R3 = new ISC branch
+enh_new_causeCode_branch = enh_umts_ranap
+
+Sync the new branch              :   build_load intel enh_new_causeCode_branch enh_new_causeCode_branch
+Get TOP from R3                  :   cvs update -R -d -A -r R3
+Merge changes from this branch   :   cvs update -d -j enh_new_causeCode_branch  (-d syncs up new dirs also) (mNode, mmx, vendor)
+Check for conflicts              :
+
+branching in p4:
+p4 integrate -r -b X (if X is a child of "this" branch"
+
+screen -h 100000 -S nitin_build
+./buildTweety.sh main nrana BL002 /tmp/README.txt
+
+************* DB install **************
+  cd $Bin
+  ./installDb.sh /root/installers/RPMS
+
+  ./mk_cluster.sh 10.3.3.16 2203 1
+  cp /var/lib/10.3.3.16/my.cnf.10.3.3.16 /etc/my.cnf
+
+  ./startDb.sh /var/lib/10.3.3.16 1
+************* DB install **************
+
+***************UI start***************
+1) UPDATE program SET argument='-xmlpath /home/R_3_0/intel/config/emsserver/ -port=18000' WHERE oid_index=3.
+
+2) insert into sw_bundle_program_map set oid_index=10,fksw_bundle=0,fkprogram=3;
+
+3) Now go to the following path /home/R_3_0/intel/webserver/appWeb/
+Do the following 
+   export LD_LIBRARY_PATH=/home/builds/R_3_0_008/intel/webserver/appWeb/bin/
+
+Kill pm if it is already running.
+
+Now run the following in the same directory
+./appWeb -f appWeb-80.conf
+In the file appWeb-80.conf make sure that the listen port is 8002
+
+4)After this start the PM.
+Check if all the processes including emsserver are up
+
+5) Now from any system to access EMS 
+type http://10.3.1.46:8002 in the address bar of your browser.
+
+Make sure that you have jre 1.5 for EMS to work properly.
+
+***************UI start***************
+
+sed and vim:
+
+search text from a particular column
+.\{43\}HttpParser::ProcessResponse/
+
+insert a line before a pattern:
+::%!awk '/pattern/ {print "hello"}; 1'
+
+adding vim help file: 
+put the <cmd>.txt file in /usr/share/vim/vim71/doc/ and then from a vim editor type
+:helptags /usr/share/vim/vim71/doc/
+
+convert m_a to m_A
+grep m_ *.cpp | sed 's/[^c]m_\(.\)/m_\U\1\u/g'
+change case: api_id to apiId
+%s/_\(.\)/\U\1\u/gc
+
+review-board copy
+%s/^I/    /g
+
+
+delete blank lines
+/	
+/^\n
+:g//d
+
+exclude SMPP_EVENT_FSM
+%s/SMPP_EVENT_\(FSM\)\@!/&ESME_/gc
+delete lines matching selected pattern
+g//d
+replace matching selected pattern with Smsc
+%s//Smsc/g
+delete blank lines
+:%s/^[ ]*\n//gc
+delete lines having "seconds"
+:%s/^.*seconds\n//gc
+
+adding in system.cfg (just paste ls -1 *.cfg)
+'<,'>s/\([a-zA-Z].*\).cfg/{ \1 17 1 \1.cfg \1.dat }/gc
+
+for converting MESSAGE_TYPE_CDMA_DTAP_CM_SERVICE_REQUEST_CONTINUATION_____25H to MESSAGE_TYPE_CDMA_DTAP_CM_SERVICE_REQUEST_CONTINUATION(0x25H
+
+:%s/\([A-Z]\)[_]*\([0-9]\)/\1(0x\2/gc
+
+multiple commands in vim:
+%s/123/456/g | %s/abc/def/g
+
+multiple file, replacing text
+:args app/views/*/*
+:argdo %s/, :expire.*)/)/ge | update
+
+removing unwanted code in #ifdef macros in a file:
+map 1 /#ifdef SCCP_DEBUG<CR> ma %5 d'a<CR>
+-----------------------GDB----------------
+-ggdb
+
+gdb:
+x/30xb p_prov_req
+
+automake --> generate Makefile.in from .am
+configure --> generate Makefile from .in
+
+autoconf looks for a file called configure.ac to create the configure script.
+and automake looks for a file called Makefile.am. It then creates a
+Makefile.in, based on the macros which it finds. This is later used by the configure script
+
+
+apt-cache search
+sudo smbpasswd -a <username>
+sudo gedit /etc/samba/smbusers
+
+
+p4:
+find files not yet added to depot
+find . ! -type d | p4 -x- have 2>&1 >/dev/null
+find . ! -type d | p4 -x- have ... 2>&1 >/dev/null  | egrep -v "\.o |\.a |\.exe |\.pdf|\.d" | sed 's/ \- file(s) not on client\.//g' 
+find . -type f -print | p4 -Ztag -x - add -nf | grep "clientFile" | cut -c16- 
+find . -type f -print | p4 -Ztag -x - add -nf | grep "clientFile" | cut -c16- | egrep  "\.cpp$|\.hpp$|\.h$|\.c$|Makefile"
+merging from 2.1 to mainline:
+p4 integrate -r -b rel2.1
+
+netcat -u -s 127.0.0.3 -p 5624 127.0.0.1 4000
+
+
+inserting newlines
+%s/;/\r{\r    e_smeConfig_t retVal = SME_CONFIG_SUCCESS;\r\r    return %retVal;\r}\r/gc
+
+
+tar:
+extract dir css from a tar file
+tar --extract --file=cbz.tar css
+tar --extract --file=cae-5.6.0-BL01.0-cl22128_amd64.tgz cae-5.6.0-BL01.0-cl22128_amd64/pool/n/netmon/netmon_5.6.0-BL01.0-cl22128_amd64.deb
+
+IP config:
+sudo ifconfig eth7 192.168.116.66
+ifconfig gtp0 10.0.0.1
+
+route add -net 69.23.43.12 -netmask 255.255.255.0 dev gtp0 gw 10.0.0.1
+
+running ppe
+./jboss-4.2.3.GA/bin/run.sh -b 192.168.116.241 &
+
+make clean; make uninstall; make all; make install; ./start-daemon.sh
+
+ dpkg -i /home/cleary/rose/buildtools-cae/src/packages/amd64/lib64-confd-2.7.2.1_2.7.2.1_amd64.deb
+
+ dpkg -i /root/nitin/VIEWS/nitin-mainline-rose-insure/cae/extern/kernel-source/packages/amd64/server/linux-image-2.6.24-19-server-tproxy_2.6.24-19.43_amd64.deb
+
+dig -b ipaddress @ns domine
+
+screen resolution change:
+xrandr -s 1280x1024
+
+
+
+Confd commands:
+choose different ports for south ep and north ep
+
+atm endpoint 1 1 1 0 33
+atm endpoint 1 1 2 0 34
+atm endpoint 1 1 1 0 35
+atm endpoint 1 1 2 0 36
+atm pvc signaling pvc1 north 1 1 1 0 33
+south 1 1 2 0 34
+commit
+exit
+atm pvc signaling pvc2 north 1 1 1 0 35
+south 1 1 2 0 36
+commit
+
+
+atm saalProfile profile1
+commit
+exit
+threeGpp rnc rnc1 pointCode 129
+commit
+exit
+threeGpp sgsn sgsn1 pointCode 130
+commit
+exit
+threeGpp path rnc1 sgsn1 signalingPvc pvc1 saalProfile profile1 slc 1
+commit
+exit
+signalingPvc pvc2 saalProfile profile1 slc 2
+commit
+exit
+
+show running config details sctp profile"
+
+ip link show eth3
+arping -I eth1 169.254.0.10
+
+
+ubuntu aptitude
+aptitude update
+xterm
+vim-gtk
+gdb
+expect
+gdm (for automatic forwarding of X DISPLAY)
+
+
+ps:
+ps fo pid,cmd
+
+
+opensaf:
+sudo DISABLE_AMF_HEALTHCHECK=1 /etc/init.d/opensafd start
+
+interface names (eth7) in vmware
+udev/rules.d/70-persistent-net.rules
+
+top:
+ps -ef | grep memTest | grep -v grep | awk '{print $2}' | xargs top -b -p
+
+awk -F":" '{s+=$2}END{print s}' 
+
+ubuntu version:
+lsb_release -a
+
+tightvncserver -geometry 1280x800
+tightvncserver -kill :3
+vnc4config (for cut-paste)
+starting server:
+vncserver :23 -depth 24 -geometry 1680x1050 
+
+tshark -V -r vfes-sig-leganes-17_55_04.pcap_sccp_NC_0xb21e17_0x25be28_13.pcap
+
+postreview update:
+postreview.py -r <review num> <p4 cl#>
+
+sudo mount -t vboxsf  voda-uk /home/nitin/voda-uk
+
+mounting remote dir:
+sudo apt-get install sshfs
+sshfs <username>@<ipaddress>:/remotepath ~/remoteserv
+sshfs 1.1.1.1:/ /media/drive1
+
+mount -t nfs -o tcp slot6:/disk /mnt
+
+sudo apt-get install linux-headers-server-tproxy
+export KERN_DIR=/usr/src/linux-headers-2.6.24-24-server-tproxy/
+
+
+sudo dpkg-reconfigure opensaf-controller
+cat /etc/opensaf/slot_id
+tipc-config -a
+tipc-config -ls
+tipc-config -ls
+
+
+sar -P ALL 1 1:
+sar -r 1 1:
+sar -n DEV 1 10 | grep Average
+
+
+sudo apt-get update
+sudo apt-get -y upgrade
+sudo aptitude install lib64-confd-3.2.2
+sudo aptitude install ia32-confd-3.2.2
+
+
+The maximum soft lockup timeout is now increased from 60 seconds to 300 seconds
+for systems that have a large number of CPUs. A soft lockup occurs when a CPU
+reports a memory starvation while it is unable to access a memory node
+accessed by other CPUs.
+In this release, you can also adjust the trigger limit for soft lockup
+warnings. To do so, use the following command (as root):
+
+        echo [time] > /proc/sys/kernel/softlockup_thresh
+
+        Replace [time] with the desired number of seconds before a soft lockup
+        warning should be triggered. By default, this value is set to 10
+        (seconds).
+sysctl -w kernel.softlockup_thresh=30        
+
+ar tv /home/nitin/VIEWS/release-nitin-rose-2.1/cae/src/packages/amd64/statsaggr_2.1.0.2.0-0nitin1-2.1_amd64.deb
+
+space hard-disk:
+du -m / | sort -r -n | head -10
+
+polygraph setup:
+start server: ./poly.sh -m  server -s 11.0.0.1-100 -p 80  -c 15.0.0-4.1-200 -o 20000 -k 1 -t 0 -r 1 -d GE
+start client: ./poly.sh -m  client -s 11.0.0.1-100 -p 80  -c 15.0.0-4.1-200 -o 20000 -k 1 -t 0 -r 1 -d GE
+
+making symbol files
+objcopy --only-keep-debug a.out a.sym
+
+LD_PRELOAD=/lib/libc-2.7.so rm /lib/libc.so.6 && LD_PRELOAD=/lib/libc-2.7.so ln -s /lib/libc-2.7.so /lib/libc.so.6
+
+
+tcpreplay help:
+1) tcpprep --cidr=10.0.0.0/8,172.16.0.0/12 --pcap=input.pcap --cachefile=input.cache
+2) if you need to change the IP addresses ONLY:
+    tcprewrite --endpoints=172.16.0.1:172.16.5.35 --cachefile=example.cache --infile=example.pcap --outfile=new.pcap
+3) tcpreplay --intf1=eth0 --intf2=eth1 --cachefile=example.cache new.pcap
+4) tcpreplay --dualfile --intf1=eth0 --intf2=eth1 side-a.pcap side-b.pcap
+
+
+
+new dev VM:
+sudo apt-get -y update
+sudo apt-get -y upgrade
+sudo apt-get -y install ctags
+sudo apt-get -y install valgrind
+sudo apt-get -y install expect
+sudo apt-get -y install tkdiff
+apt-get install lib64-confd-3.4.2
+apt-get install ia32-confd-3.4.2
+apt-get install linux-server-tproxy
+apt-get install opensaf-payload
+apt-get install opensaf-libs
+apt-get install opensaf-controller
+libmemcached memcached opensaf-common opensaf-controller opensaf-libs snmp sysstat
+tipcutils
+
+
+CREATE USER 'nrana'@'localhost'
+
+adding interfaces on Virtual Box VM:
+C:\Program Files\Oracle\VirtualBox>VBoxManage.exe  modifyvm CAE-1 --nic5 intnet
+--intnet5 south-1 --cableconnected5 on
+C:\Program Files\Oracle\VirtualBox>VBoxManage.exe  modifyvm CAE-1 --nic6 intnet
+--intnet6 north-1 --cableconnected6 on
+
+
+new VMs:
+interfaces
+apt-get install -y vim-gtk
+apt-get install -y xterm
+aliases
+
+auto eth1
+iface eth1 inet manual
+up ifconfig eth1 up
+
+sfptool -s
+NOTE: it only shows presence of SFPs, not the cable
+hpmcmd>slotmap
+
+
+confd debugging:
+1)
+source /opt/confd/spx/bin/confd-spx-env.sh 
+source /opt/confd/cae/bin/confd-cae-env.sh 
+/opt/confd/bin/confd --status > /tmp/a
+
+2)
+enum confd_debug_level confdDebugLevel = CONFD_TRACE;
+// initialize the ConfdAgent
+if (m_confdAgent.initialize(confdDebugLevel, &m_confdAgentCbk))
+check stdout log in your app: /var/lib/opensaf/stdouts
+
+rename 's/CommMgrPub/CommMgrCaePub/' *
+open default files to a changelist
+p4 reopen -c 12569  `p4 opened | grep default | sed 's/#.*$//'`
+
+make commmgrspx-package tarball-spx
+
+rpm -ivh --nodeps
+reboot
+
+
+apt-get source <pkgName>
+
+/etc/default/platform-vars
+
+changing hostname:
+/etc/hosts, /etc/hostname, service hostname restart
+
+mirroring on F125:
+go to the output interface config: (e.g. mirror xe27 to this interface)
+mirror interface xe27 direction both
+
+blink:
+sudo ethtool -p  eth2 30
+
+rpm -qlp (query list)
+rpm2cpio srstackware-config-f125-2.1.3_5-ppc.rpm | cpio -idmv (extract)
+
+
+pubsub:
+case 1: publisher restarts
+publisher available ind at sub, sub sends "PubSub registration request" to pub
+at pub: MessageObj *PubSubRegisterMsg::recv() 
+         -- addObserver
+            -- synchronize
+
+ NTC:33554432:{05/07/11 - 19:08:13:401239}:IPC.cpp:722:openTipcClientConnection
+ TipcIPC:  connected client to 0x005c0000/0x40012800
+ 161 NTC:1:{05/07/11 -
+ 19:08:13:401673}:SctpMonResourceMgmtClientCB.cpp:123:syncStart resource mgmt
+ publisher sync start
+ 162 NTC:1:{05/07/11 - 19:08:13:401738}:CommMgmtSubscriberMsgs.cpp:99:recv
+ Updated EPL interface names:S(fabric0.507) N(fabric1.508)
+
+[4:31:48 AM] Ron Parker: That is subscriber vs. publisher.
+[4:32:10 AM] Ron Parker: But on publisher, you should create and register the
+publisher object before registering the TIPC name.
+[4:32:17 AM] Ron Parker: Otherwise, you could receive the register request
+before you are ready to handle it.
+[4:32:31 AM] Nitin Rana: hmmm
+[4:32:37 AM] Nitin Rana: let me check this
+[4:32:46 AM] Ron Parker: Since subscriber is keying off the TipcName, only.
+[4:43:13 AM] Nitin Rana: The tipc name you are referring to is the publisher
+TIPC name, right?
+[4:43:43 AM] Ron Parker: yes
+[4:44:18 AM] Ron Parker: Also, on subscriber, make sure TIPC name is registered
+before adding subscriber object.   So this one is opposite the order for
+publisher.
+[4:48:03 AM] Nitin Rana: self TIPC name
+
+
+Subscriber:
+ haCtxt.GetHaApp().StartMyTipc();
+ haCtxt.GetHaApp().SubscribeSyncTopics();
+
+Publisher:
+
+
+
+automated ssh:
+Configure sshd SERVER
+First, add the following lines to /etc/ssh/sshd_config:
+RhostsRSAAuthentication yes
+HostbasedAuthentication yes
+IgnoreRhosts no
+You will need to reload sshd's config after making these changes:
+sudo /etc/init.d/ssh reload (PBs)
+sudo /etc/init.d/sshd reload (SBs)
+
+Open /etc/ssh/ssh_config in your favorite editor.  Find the line
+Host *
+and insert before that line:
+EnableSSHKeysign yes
+Host slot*
+  HostbasedAuthentication yes
+Host 169.254.91.*
+  HostbasedAuthentication yes
+Host 169.254.92.*
+  HostbasedAuthentication yes
+
+on each slot:
+ssh-keyscan -t rsa slot1 slot5 slot6 slot9 slot10 > /etc/ssh/ssh_known_hosts
+cat /etc/ssh/ssh_known_hosts | cut -d ' ' -f 1 > /etc/hosts.equiv
+cp /etc/hosts.equiv ~/.shosts ; chmod 600 ~/.shosts
+
+
+minicom
+dmesg|grep ttyS for figuring out the device name for serial port settings
+9600 8N1 NOR VT102 offline
+
+
+chassis setup:
+1) F125 upgraded firmware
+2) F125 config files
+3) apt-get update && apt-get dist-upgrade on all PBs
+4) cae tgz
+4.5)  sudo cp /tmp/imm.xml /etc/opensaf/imm.xml
+5) config
+6) sim config
+7) rules
+
+
+polygraph:
+/usr/local/bin/polygraph-client --config /tmp/mtawp/2011-06-02_22-56-12/gc_4250.pg --verb_lvl 10 --log wp.log
+
+
+crash /var/crash/vmcore /usr/lib/debug/boot/vmlinux-2.6.32-27
+crash /boot/System.map-2.6.32-27-server /usr/lib/debug/boot/vmlinux-2.6.32-27-server ./vmcore
+
+dpkg -s cae |/bin/grep Version
+dpkg -r <pkgnamr> to remove
+
+
+IPC
+accepted 
+PubSub uses accepted socket also to send
+
+connected
+others use only connected socket to send and accepted to receive
+
+default gcc header files search path
+ echo "" | gcc - -xc -v -E
+
+power commands for ATCA (chassis)
+summarty: hpihotswap -d 1 -s
+power up: hpihotswap -d 1 -u 88
+
+ip route list table MTM
+ip rule show
+
+Bringing up an interface without IP on boot time
+auto eth0
+iface eth0 inet manual
+    pre-up ifconfig $IFACE up
+    post-down ifconfig $IFACE down
+
+    adding gateway for host route:
+    route add -host 192.168.26.2 gw 192.168.26.1 dev bond2    
+
+
+
+ CDMA: kdp db as ALR (anchor is where packet arrived)
+ UMTS: cspmAgent's ALR
+
+Enable Copy and Paste from Ubuntu VMware Guest
+Once your VMware tools are installed, you will want to launch the vmware toolbox
+utility, which must be running if you want copy and paste to work.
+Go to your command line, and run the following command:
+> vmware-toolbox &
+
+ethtool -S fabric0 | grep fdir_miss  --> non-zero means flow-director is enabled
+To display UDP hashing current configuration run: (http://downloadmirror.intel.com/14687/eng/README.txt)
+ethtool -n ethX rx-flow-hash udp4
+
+
+iperf -B 17.1.0.1 -c 21.1.0.1 -i 2 -t 60 -p 80 -l 30000
+
+-d tcp.port==8888,http
+tshark -V -T text -R 'http.request and http.request.method == "POST"' -r b.pcap 
+
+
+DNA and/or libzero
+DNA -- packets directly from adaptor to user-space  (zero copy)
+libzero -- enables to do load-balancing, moving pkts from app to another app, transmit (no copy)
+
+opreport --symbols -g --details -l --demangle=smart /opt/cae/bin/netmon &> report.txt
+
+diff command to exclude:
+diff -r exportApp/ /home/nrana/VIEWS/nrana-mustang-5.6/cae/src/exportApp -x "*.[ody]" -x "*.py" -x "*.pyc" -x "*.txt" -x "*.cfg"
+
+//mutex using valgrind
+BIN="valgrind --log-file=/var/cae/val.`date +%N` --tool=drd --trace-mutex=yes --trace-rwlock=yes --exclusive-threshold=5 /opt/cae/bin/netmon"
+
+finding contention b/w locks:
+1) use strace to get the lock address
+2) attach gdb to the required thread: gdb /opt/cae/bin/netmon 17174
+3) set watch point : watch *0x7f9ef9b83230
+4) voila !!
+
+
+DDNS (avahi) should be stopped before joining linux to domain
+/etc/init.d/avahi-daemon stop
+
+rsync -rtvz mysetup nirana@bos-lp1xn:/home/nirana/
+
+list hiddlen files only:
+ls -ax | egrep '^\.' | xargs ls --color=auto -ld
+
+iptables:
+clear all rules in a "chain": sudo iptables -F FORWARD
+list rule numbers: sudo iptables -L INPUT --line-numbers
+
+sudo sysctl net.ipv6.conf.lan1.disable_ipv6=1
+
+
+loop device (to mount a files as block device filesystem)
+umount /dev/mapper/loop0*
+ls /dev/mapper
+dmsetup remove /dev/mapper/loop0p5
+dmsetup remove /dev/mapper/loop0p2
+dmsetup remove /dev/mapper/loop0p1
+losetup -d /dev/loop0
+losetup -d /dev/loop1
+
+sudo find / -xdev -type f -size +10000000c -exec ls -ltrh {} \;
+
+start new ssh-agent.
+export variables printed on the screen, ssh-add private key (permissions 600)
+
+ssh -A to forward local ssh-agent to remote
+
+Recursive wget
+sudo wget -nd -r -l 2 --no-parent -initrd.img http://172.25.37.151/btfbuilds/sky_5677/20130709.11045941/debug.sky/pxe/ -R index*
+
+service logs
+/var/log/upstart
+
+
+debian build-vm changes:
+/etc/akamai-release
+sudo apt-get install lib32z1-dev
+libunwind
+sudo perl -MCPAN -e 'install XML::DOM'
+
+multiple terminals:
+gnome-terminal --tab-with-profile=Default -e "/home/nirana/mysetup/machines/cli1" --title="CLIENT1" --tab-with-profile=Default -e "/home/nirana/mysetup/machines/wan" --title="WANSIM"
+
+too many authentication
+ssh -o PubkeyAuthentication=no
+
+tab color
+/usr/share/themes/Ambiance/gtk-3.0/gtk-widgets.css
+
+
+BIGSKY HELP
+----------
+/a/etc/chimera/state/ent.acc.chimera.cfg
+/usr/bin/smbclient  \\\\10.0.0.3\\\myshare bigsky
+versions: -m LANMAN1, NT1, CORE, etc..
+
+Virtualization
+--------------
+virsh domxml-to-native qemu-argv demo.xml
+
+Timers:
+Finn Arne Gangstad timer wheels
+https://lkml.org/lkml/2005/10/19/46
+
