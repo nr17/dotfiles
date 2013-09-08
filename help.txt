@@ -593,7 +593,7 @@ finding contention b/w locks:
 DDNS (avahi) should be stopped before joining linux to domain
 /etc/init.d/avahi-daemon stop
 
-rsync -rtvz mysetup nirana@bos-lp1xn:/home/nirana/
+rsync -rtvz mysetup nirana@bos-lp1xn:~/
 
 list hiddlen files only:
 ls -ax | egrep '^\.' | xargs ls --color=auto -ld
@@ -635,7 +635,7 @@ libunwind
 sudo perl -MCPAN -e 'install XML::DOM'
 
 multiple terminals:
-gnome-terminal --tab-with-profile=Default -e "/home/nirana/mysetup/machines/cli1" --title="CLIENT1" --tab-with-profile=Default -e "/home/nirana/mysetup/machines/wan" --title="WANSIM"
+gnome-terminal --tab-with-profile=Default -e "~/mysetup/machines/cli1" --title="CLIENT1" --tab-with-profile=Default -e "~/mysetup/machines/wan" --title="WANSIM"
 
 too many authentication
 ssh -o PubkeyAuthentication=no

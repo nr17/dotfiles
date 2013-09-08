@@ -30,9 +30,9 @@ P4USER=$USER
 P4PORT=rsh:crackpipe ssh -1 -a -c blowfish -l p4ssh -q -x perforce.akamai.com /bin/true
 P4CONFIG=.perforce
 
-export LD_LIBRARY_PATH=/home/nirana/sublimePlugins/SublimeClang
+export LD_LIBRARY_PATH=~/sublimePlugins/SublimeClang
 
-#if [ -d /home/nirana/VIEWS/vroot6 ]; then
+#if [ -d ~/VIEWS/vroot6 ]; then
 
 if [ ! -e /in_chroot ]
 then
@@ -155,7 +155,8 @@ alias mv='mv -i'
 export ANT_HOME=/root/installers/apache-ant-1.6.5
 export JAVA_HOME=/root/installers/jdk1.5.0_11
 export PATH=$PATH:.
-export PATH=$PATH:/home/nirana/mysetup/:/home/nirana/mysetup/machines
+export PATH=$PATH:~/mysetup/:~/mysetup/machines
+export PATH=$PATH:~/dotfiles/
 
 # Source global definitions
 if [ -f /etc/bashrc ]; then
@@ -163,7 +164,7 @@ if [ -f /etc/bashrc ]; then
 fi
 
 
-#export VIMRUNTIME=/home/nirana/winph/my_tools/vim70/runtime
+#export VIMRUNTIME=~/winph/my_tools/vim70/runtime
 
 export HISTFILESIZE=10000
 export HISTSIZE=10000
@@ -186,7 +187,7 @@ alias cax='cd $SRC_ROOT/app_acc_cax/'
 alias cifs='cd $SRC_ROOT/chimera_mod_cifs/src'
 
 #source the cv function
-source /home/nirana/mysetup/cv.sh
+source ~/mysetup/cv.sh
 
 ulimit -c unlimited
 ulimit -s unlimited
