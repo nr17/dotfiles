@@ -37,3 +37,8 @@ alias pl='cd $SRC_ROOT/sandbox/bigsky/app_acceleration_plugins'
 alias aa='cd $SRC_ROOT/app_acc_common/src'
 alias cax='cd $SRC_ROOT/app_acc_cax/'
 alias cifs='cd $SRC_ROOT/chimera_mod_cifs/src'
+
+if [ -f ~/.os_aliases ]
+then
+   source ~/.os_aliases
+fi
