@@ -665,4 +665,9 @@ git config --global user.name "nitinr"
 git config --global user.email "nitin_rec@yahoo.com"
 git commit -m "my first set of dotfiles"
 git commit --amend --reset-author
-
+git pull origin master
+Upload change:
+git commit -a -m "Changed some files"
+git push origin master
+Cheat Sheet:
+http://cheat.errtheblog.com/s/git
