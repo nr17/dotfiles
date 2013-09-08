@@ -658,3 +658,11 @@ Timers:
 Finn Arne Gangstad timer wheels
 https://lkml.org/lkml/2005/10/19/46
 
+
+GIT
+---
+git config --global user.name "nitinr"
+git config --global user.email "nitin_rec@yahoo.com"
+git commit -m "my first set of dotfiles"
+git commit --amend --reset-author
+
