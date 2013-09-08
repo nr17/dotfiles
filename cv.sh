@@ -29,7 +29,7 @@ cv() {
       export SRC_ROOT=~/VIEWS/bigSky
     elif [ $i -eq 5 ]
     then
-      export P4CLIENT=nirana-dev-chimera_1.0
+      export P4CLIENT=nirana-laptop-chimera-app-acc
       export SRC_ROOT=~/VIEWS/bigSkyDev
     elif [ $i -eq 6 ]
     then

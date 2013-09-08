@@ -27,7 +27,7 @@ else
 fi
 
 echo "Running cscope....."
-LANG=C /usr/bin/cscope -q -b -i $CSCOPE_DIR/src.files -f $CSCOPE_DIR/src.out
+LANG=C cscope -q -b -i $CSCOPE_DIR/src.files -f $CSCOPE_DIR/src.out
 
 S=$?
 if [ $S != 0 ]; then

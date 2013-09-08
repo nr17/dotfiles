@@ -123,6 +123,7 @@ export JAVA_HOME=/root/installers/jdk1.5.0_11
 export PATH=$PATH:.
 export PATH=$PATH:~/mysetup/:~/mysetup/machines
 export PATH=$PATH:~/dotfiles/
+export PATH="/usr/local/bin:$PATH"
 
 # Source global definitions
 if [ -f /etc/bashrc ]; then
