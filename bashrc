@@ -22,8 +22,8 @@ keychain ~/.ssh/active/current-internal ~/.ssh/active/current-external ~/.ssh/ac
 #ssh-add ~/.ssh/active/current-external 
 #ssh-add ~/.ssh/active/current-deployed 
 
-#source ~/.aliases
-source ~/mysetup/cv.sh
+source ~/.my_aliases
+source ~/dotfiles/cv.sh
 
 P4EDITOR=/usr/bin/vim
 P4USER=$USER
@@ -111,46 +111,12 @@ esac
 #    . ~/.bash_aliases
 #fi
 
-# enable color support of ls and also add handy aliases
-if [ "$TERM" != "dumb" ] && [ -x /usr/bin/dircolors ]; then
-    eval "`dircolors -b`"
-    alias ls='ls --color=auto'
-    alias dir='ls --color=auto --format=vertical'
-    alias vdir='ls --color=auto --format=long'
-
-    alias grep='grep --color=auto'
-    alias fgrep='fgrep --color=auto'
-    alias egrep='egrep --color=auto'
-fi
-
-# some more ls aliases
-alias la='ls -A'
-alias l='ls -CF'
-
 # enable programmable completion features (you don't need to enable
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
 # sources /etc/bash.bashrc).
 if [ -f /etc/bash_completion ]; then
     . /etc/bash_completion
 fi
-
-# .bashrc
-
-# User specific aliases and functions
-# User specific aliases and functions
-alias c=clear
-alias ll='ls -ltrh'
-alias ..='cd ..'
-alias ...='cd ../../'
-
-
-#alias vim='~/bin/vim70/src/vim'
-alias gvim='gvim -geometry 80x50'
-alias vi=vim
-
-alias rm='rm -i'
-alias cp='cp -i'
-alias mv='mv -i'
 
 export ANT_HOME=/root/installers/apache-ant-1.6.5
 export JAVA_HOME=/root/installers/jdk1.5.0_11
@@ -168,26 +134,6 @@ fi
 
 export HISTFILESIZE=10000
 export HISTSIZE=10000
-
-# User specific aliases and functions
-alias c=clear
-alias ll='ls -ltrh'
-alias ..='cd ..'
-alias ...='cd ../../'
-alias view='cd $SRC_ROOT'
-alias rc='source ~/.bashrc'
-alias b='vim ~/.bashrc'
-alias h='vim ~/help.txt'
-alias s='gvim /u4/nirana/akamai/scratch.txt'
-alias gvim='UBUNTU_MENUPROXY= gvim'
-alias ipt='echo -e "\n.......RAW......\n" && sudo iptables -t raw -L -n -v && echo -e "\n.......MANGLE.......\n" && sudo iptables -t mangle -L -n && echo -e "\n.......NAT......\n" && sudo iptables -t nat -L -n && echo -e "\n.......FILTER......\n" && sudo iptables -L -n -v'
-alias pl='cd $SRC_ROOT/sandbox/bigsky/app_acceleration_plugins'
-alias aa='cd $SRC_ROOT/app_acc_common/src'
-alias cax='cd $SRC_ROOT/app_acc_cax/'
-alias cifs='cd $SRC_ROOT/chimera_mod_cifs/src'
-
-#source the cv function
-source ~/mysetup/cv.sh
 
 ulimit -c unlimited
 ulimit -s unlimited

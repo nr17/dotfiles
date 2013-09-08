@@ -1,0 +1,39 @@
+# enable color support of ls and also add handy aliases
+if [ "$TERM" != "dumb" ] && [ -x /usr/bin/dircolors ]; then
+    eval "`dircolors -b`"
+    alias ls='ls --color=auto'
+    alias dir='ls --color=auto --format=vertical'
+    alias vdir='ls --color=auto --format=long'
+
+    alias grep='grep --color=auto'
+    alias fgrep='fgrep --color=auto'
+    alias egrep='egrep --color=auto'
+fi
+# some more ls aliases
+alias la='ls -A'
+alias l='ls -CF'
+# User specific aliases and functions
+alias c=clear
+alias ll='ls -ltrh'
+alias ..='cd ..'
+alias ...='cd ../../'
+alias gvim='gvim -geometry 80x50'
+alias vi=vim
+alias rm='rm -i'
+alias cp='cp -i'
+alias mv='mv -i'
+alias c=clear
+alias ll='ls -ltrh'
+alias ..='cd ..'
+alias ...='cd ../../'
+alias view='cd $SRC_ROOT'
+alias rc='source ~/.bashrc'
+alias b='vim ~/.bashrc'
+alias h='vim ~/help.txt'
+alias s='gvim /u4/nirana/akamai/scratch.txt'
+alias gvim='UBUNTU_MENUPROXY= gvim'
+alias ipt='echo -e "\n.......RAW......\n" && sudo iptables -t raw -L -n -v && echo -e "\n.......MANGLE.......\n" && sudo iptables -t mangle -L -n && echo -e "\n.......NAT......\n" && sudo iptables -t nat -L -n && echo -e "\n.......FILTER......\n" && sudo iptables -L -n -v'
+alias pl='cd $SRC_ROOT/sandbox/bigsky/app_acceleration_plugins'
+alias aa='cd $SRC_ROOT/app_acc_common/src'
+alias cax='cd $SRC_ROOT/app_acc_cax/'
+alias cifs='cd $SRC_ROOT/chimera_mod_cifs/src'

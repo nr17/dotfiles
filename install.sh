@@ -15,6 +15,7 @@ files="            \
     help.txt       \
     install.sh     \
     log.vim        \
+    my_aliases     \
     vimrc"
 
 ##########

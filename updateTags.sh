@@ -16,9 +16,9 @@ fi
 echo "Running cscope"
 if [ $# = 0 ]
 then
-    ~/mysetup/cscope_src.sh 
+    ~/dotfiles/cscope_src.sh 
 else
-    ~/mysetup/cscope_src.sh 1
+    ~/dotfiles/cscope_src.sh 1
 fi
 
 
