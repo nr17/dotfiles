@@ -22,6 +22,7 @@ keychain ~/.ssh/active/current-internal ~/.ssh/active/current-external ~/.ssh/ac
 #ssh-add ~/.ssh/active/current-external 
 #ssh-add ~/.ssh/active/current-deployed 
 
+   
 source ~/.my_aliases
 source ~/dotfiles/cv.sh
 
@@ -131,17 +132,15 @@ if [ -f /etc/bashrc ]; then
 fi
 
 
-#export VIMRUNTIME=~/winph/my_tools/vim70/runtime
-
 export HISTFILESIZE=10000
 export HISTSIZE=10000
 
 ulimit -c unlimited
-ulimit -s unlimited
 
-xhost +
-#echo "setting display to:192.168.116.101:0.0"
-#export DISPLAY=192.168.116.101:0.0
+
+if [[ "$OSTYPE" != "darwin"* ]]; then
+   xhost +
+fi
 
 #P4 server related settings
 export P4DIFF=tkdiff
