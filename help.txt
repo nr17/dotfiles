@@ -661,8 +661,8 @@ https://lkml.org/lkml/2005/10/19/46
 
 GIT
 ---
-git config --global user.name "nitinr"
-git config --global user.email "nitin_rec@yahoo.com"
+git config --global user.name "xxxx"
+git config --global user.email "xxxx@yahoo.com"
 git remote add origin git@github.com:nr17/dotfiles.git
 git commit -m "my first set of dotfiles"
 git commit --amend --reset-author
