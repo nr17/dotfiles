@@ -13,7 +13,9 @@ fi
 
 check-ssh-add
 
-keychain ~/.ssh/active/current-internal ~/.ssh/active/current-external ~/.ssh/active/current-deployed
+if [[ "$OSTYPE" != "darwin"* ]]; then
+  keychain ~/.ssh/active/current-internal ~/.ssh/active/current-external ~/.ssh/active/current-deployed
+fi
 #[ -z "$HOSTNAME" ] && HOSTNAME=`uname -n`
 #[ -f $HOME/.keychain/$HOSTNAME-sh ] && . $HOME/.keychain/$HOSTNAME-sh
 #[ -f $HOME/.keychain/$HOSTNAME-sh-gpg ] && . $HOME/.keychain/$HOSTNAME-sh-gpg
