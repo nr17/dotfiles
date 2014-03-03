@@ -147,3 +147,16 @@ fi
 #P4 server related settings
 export P4DIFF=tkdiff
 set bell-style none
+
+
+#word completion in bash
+#e.g. for "do /a/bin/tfetch sripd<TAB>"
+tableList=( $(/a/bin/tfetch -v _tables) )
+tableList="${tableList[@]:2}"
+_tfetch()
+{
+    cur=${COMP_WORDS[COMP_CWORD]}
+    COMPREPLY=( $(compgen -W "$tableList" -- $cur) )
+}
+complete -F _tfetch tfetch
+

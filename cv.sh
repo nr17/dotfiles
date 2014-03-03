@@ -9,6 +9,7 @@ cv() {
     echo "5. bigSkyDev"
     echo "6. frox"
     echo "7. cax-2.0"
+    echo "8. linux-3.10"
 
     read i
 
@@ -37,6 +38,9 @@ cv() {
     elif [ $i -eq 7 ]
     then
       export SRC_ROOT=~/VIEWS/cax-2.00beta1
+    elif [ $i -eq 8 ]
+    then
+      export SRC_ROOT=~/VIEWS/linux-3.10.17
     fi 
     
     export CSCOPE_DB=$SRC_ROOT/src.out
