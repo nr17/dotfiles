@@ -4,7 +4,8 @@ set ic
 set autoindent
 set smartindent
 set cindent
-filetype plugin indent on
+set backspace=2 " make backspace work like most other apps
+"filetype plugin indent on
 
 set ts=4
 set tabstop=4
@@ -43,7 +44,10 @@ set softtabstop=2
 "	lN    If N != 0 Vim will align with a case label instead of the
 "         statement after it in the same line.
 
-se cinoptions=g-2,+0,>2,^2,:2,=2,(0,h4,t0,l1
+"My previous settings 5,2,2..
+"se cinoptions=g-2,+0,>2,^2,:2,=2,(0,h4,t0,l1
+"For SRIP
+se cinoptions=g,+0,>4,^0,:4,=4,(0,h4,t0,l1
 
 "wrap text visually (http://vim.wikia.com/wiki/Word_wrap_without_line_breaks)
 set wrap
@@ -76,6 +80,10 @@ set sm
 set incsearch
 set hlsearch
 
+augroup vimrc_autocmds
+    autocmd BufEnter * highlight OverLength ctermbg=white guibg=lightblue
+    autocmd BufEnter * match OverLength /\%80v.*/
+augroup END
 autocmd BufRead *.cs set syntax=xml
 autocmd BufRead *       set formatoptions=tcql nocindent comments&
 "autocmd BufRead *.c,*.cpp,*.h set ts=4 sw=4 expandtab
@@ -207,8 +215,8 @@ set nocsverb
 source ~/.cscope_map.vim
 
 
-:au BufNewFile,BufRead *log    source ~/.cvxlog.vim
-:au BufNewFile,BufRead *latest    source ~/.cvxlog.vim
+:au BufNewFile,BufRead *log    source ~/.log.syntax
+:au BufNewFile,BufRead *latest    source ~/.log.syntax
 ":au BufNewFile,BufRead *.h    source /usr/local/share/vim/vim70/syntax/cpp.vim
 
 
